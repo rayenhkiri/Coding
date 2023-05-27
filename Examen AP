@@ -1,0 +1,142 @@
+// Appel des bibliothèques
+#include<stdio.h>
+#include<math.h>
+#include <string.h>
+#include<stdlib.h>
+#include<ctype.h>
+// Question 1 : choisir "chiffrer" ou "Déchiffrer"
+int choose (int* ch)
+{
+	do
+	{
+		printf("Dabord ,\nPour le chiffrement taper 1 \nPour le dechiffrement taper 2 \nVotre choix : ");
+		scanf("%d", ch);
+		getchar();
+	} while (((*ch) < 1) || ((*ch) > 2));
+	return (*ch);
+}
+// saisir le message 
+void Message(char* msg)
+{
+	// saisie du message 
+	fgets(msg, 4*sizeof(msg), stdin);
+	msg[strcspn(msg, "\n")] = '\0';// Enlever l'espace a la fin de la chaine
+}
+// Message valide ou non
+int Msg_Valide(char* msg)
+{
+    int i;
+    int n = strlen(msg);
+    for (i = 0; i < n; i++) 
+	{
+        if (!(msg[i] >= 'a' && msg[i] <= 'z') && !(msg[i] >= 'A' && msg[i] <= 'Z')) {
+            return 0; 
+        }
+    }
+	return 1;
+}
+// Les données de Chiffrement/Dechiffrement
+int Data(char* msg, int* pas)
+{
+	if (Msg_Valide((msg)))
+	{
+		do
+		{
+			printf("Veuillez saisir le Decalage : ");
+			scanf("%d", pas);
+		} while ((*pas) < 0 || (*pas) > 25);
+	}
+	else return (-1);
+	return (*pas);
+}
+// Tester
+void Tester(char* msg)
+{
+	if (Msg_Valide(msg))
+		printf("Message Valide, Continuer .\n");
+	else
+		printf("Message Invalide ! Verifier les caracteres de votre message . \n");
+}
+// question 2 : Choix de Chiffrement (Le message à chiffrer et le décalage)
+void Encrypt_Choice(char* msg, int* pas)
+{
+	printf("Veuillez saisir un message a Chiffrer : ");
+	Message(msg);
+	printf("--------------------------------------------------------------------------\n");
+	Tester(msg);
+	printf("--------------------------------------------------------------------------\n");
+	Data(msg, pas);
+	printf("--------------------------------------------------------------------------\n");
+}
+// question 3 : Choix de Dechiffrement (Le message chiffré et le décalage)
+void Decrypt_Choice(char* msg, int* pas)
+{
+	printf("Veuillez saisir le message chiffre : ");
+	Message(msg);
+	printf("--------------------------------------------------------------------------\n");
+	Tester(msg);
+	printf("--------------------------------------------------------------------------\n");
+	Data(msg, pas);
+	printf("--------------------------------------------------------------------------\n");
+}
+// Question 4 : Chiffrer/Dechiffrer le message 
+// Chiffrement
+void Encrypt_msg(char* msg, int* pas)
+{
+	if (Msg_Valide(msg))
+	{
+		int i, n;
+		n = strlen(msg);
+		for (i = 0; i < n; i++)
+		{
+			if (isupper(msg[i]))
+				msg[i] = ((msg[i] - 'A') + (*pas)) % 26 + 'A';
+			else
+				msg[i] = ((msg[i] - 'a') + (*pas)) % 26 +'a';
+		}
+		printf("Le message chiffre est : %s .\n", msg);
+	}
+}
+// Dechiffrement
+void Decrypt_msg(char* msg, int* pas)
+{
+	if (Msg_Valide(msg))
+	{
+		int i, n;
+		n = strlen(msg);
+		for (i = 0; i < n; i++)
+		{
+			if (isupper(msg[i]))
+				msg[i] = ((msg[i] - 'A') - (*pas) + 26 ) % 26 + 'A';
+			else
+				msg[i] = ((msg[i] - 'a') - (*pas) + 26 ) % 26 + 'a';
+		}
+		printf("Le message chiffre est : %s .\n", msg);
+	}
+}
+// Proggramme principale
+int main()
+{
+	//declaration
+	printf("Salut Monsieur Azer Hasnaoui .\nJ'espere que vous etes bien .\nJe suis Rayen Hkiri et c'est mon travail\nconcernant le devoir d'atelier de programmation :\n");
+	int ch,pas;
+	char msg[100];
+	printf("--------------------------------------------------------------------------\n");
+	ch = choose(&ch);// Question 1
+	printf("--------------------------------------------------------------------------\n");
+	// Question 2+3+4+5
+	if (ch == 1)
+	{
+		pas = Data(msg, &pas);
+		Encrypt_Choice(msg, &pas);
+		Encrypt_msg(msg, &pas);
+	}
+	else
+	{
+		pas = Data(msg, &pas);
+		Decrypt_Choice(msg, &pas);
+		Decrypt_msg(msg, &pas);
+	}
+	printf("--------------------------------------------------------------------------\n");
+	printf("A la fin , j'espre que vous aimerez mon travail , Bon vacances .\n\n\n\n\n\n\n\n\n");
+}
